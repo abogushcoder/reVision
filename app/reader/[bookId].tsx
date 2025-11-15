@@ -1,0 +1,202 @@
+import { getBookById } from '@/src/data/booksIndex';
+import {
+    flattenBookContent,
+    generateBookLayout,
+    getPageByNumber,
+    type BookLayout,
+    type LayoutConfig
+} from '@/src/services/pagination';
+import { router, useLocalSearchParams } from 'expo-router';
+import { useEffect, useState } from 'react';
+import { Dimensions, Pressable, StyleSheet, Text, View } from 'react-native';
+
+const { width, height } = Dimensions.get('window');
+
+export default function ReaderScreen() {
+    const { bookId } = useLocalSearchParams<{ bookId: string }>();
+    const book = getBookById(bookId);
+
+    const [bookLayout, setBookLayout] = useState<BookLayout | null>(null);
+    const [currentPageNum, setCurrentPageNum] = useState(1);
+    const [fontSize, setFontSize] = useState(16);
+    const [isLoading, setIsLoading] = useState(true);
+
+    // Generate layout when book loads or settings change
+    useEffect(() => {
+        if (!book) return;
+
+        const generateLayout = async () => {
+            setIsLoading(true);
+
+            const config: LayoutConfig = {
+                screenHeight: height - 120, // Minus header/footer
+                screenWidth: width - 40,
+                fontSize,
+                lineHeight: 1.5,
+                marginTop: 20,
+                marginBottom: 20,
+                paragraphSpacing: 12,
+            };
+
+            const content = flattenBookContent(book);
+
+            // Simple measurement: estimate height based on text length
+            const measureContent = async () => {
+                let totalHeight = 0;
+                content.forEach((item) => {
+                    const estimatedLines = Math.ceil(item.text.length / 50);
+                    totalHeight += estimatedLines * fontSize * 1.5;
+                    if (item.type === 'paragraph') {
+                        totalHeight += 12; // paragraph spacing
+                    }
+                });
+                return totalHeight;
+            };
+
+            const layout = await generateBookLayout(book, config, measureContent);
+            setBookLayout(layout);
+            setIsLoading(false);
+        };
+
+        generateLayout();
+    }, [book, fontSize]);
+
+    if (!book) {
+        return (
+            <View style={styles.container}>
+                <Text>Book not found</Text>
+            </View>
+        );
+    }
+
+    if (isLoading || !bookLayout) {
+        return (
+            <View style={styles.container}>
+                <Text>Loading...</Text>
+            </View>
+        );
+    }
+
+    const currentPage = getPageByNumber(bookLayout, currentPageNum);
+    const content = flattenBookContent(book);
+
+    // Get content for current page (simplified - just show one paragraph)
+    const pageContent = content[Math.min(currentPageNum - 1, content.length - 1)];
+
+    return (
+        <View style={styles.container}>
+            {/* Header */}
+            <View style={styles.header}>
+                <Pressable onPress={() => router.back()}>
+                    <Text style={styles.backButton}>← Back</Text>
+                </Pressable>
+                <Text style={styles.chapterTitle}>{currentPage?.chapterTitle}</Text>
+            </View>
+
+            {/* Reading Area */}
+            <View style={styles.contentArea}>
+                <Text style={[styles.content, { fontSize }]}>
+                    {pageContent?.text}
+                </Text>
+            </View>
+
+            {/* Footer Controls */}
+            <View style={styles.footer}>
+                <Pressable
+                    style={styles.navButton}
+                    onPress={() => setCurrentPageNum(Math.max(1, currentPageNum - 1))}
+                    disabled={currentPageNum === 1}
+                >
+                    <Text style={styles.navButtonText}>Previous</Text>
+                </Pressable>
+
+                <Text style={styles.pageNumber}>
+                    Page {currentPageNum} / {bookLayout.pages.length}
+                </Text>
+
+                <Pressable
+                    style={styles.navButton}
+                    onPress={() => setCurrentPageNum(Math.min(bookLayout.pages.length, currentPageNum + 1))}
+                    disabled={currentPageNum === bookLayout.pages.length}
+                >
+                    <Text style={styles.navButtonText}>Next</Text>
+                </Pressable>
+            </View>
+
+            {/* Font Size Controls (for testing) */}
+            <View style={styles.controls}>
+                <Text>Font Size: {fontSize}</Text>
+                <Pressable onPress={() => setFontSize(fontSize - 2)}>
+                    <Text style={styles.controlButton}>A-</Text>
+                </Pressable>
+                <Pressable onPress={() => setFontSize(fontSize + 2)}>
+                    <Text style={styles.controlButton}>A+</Text>
+                </Pressable>
+            </View>
+        </View>
+    );
+}
+
+const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        backgroundColor: '#fff',
+    },
+    header: {
+        paddingTop: 50,
+        paddingHorizontal: 20,
+        paddingBottom: 10,
+        borderBottomWidth: 1,
+        borderBottomColor: '#e0e0e0',
+    },
+    backButton: {
+        fontSize: 16,
+        color: '#007AFF',
+        marginBottom: 8,
+    },
+    chapterTitle: {
+        fontSize: 14,
+        color: '#666',
+    },
+    contentArea: {
+        flex: 1,
+        paddingHorizontal: 20,
+        paddingVertical: 20,
+        justifyContent: 'center',
+    },
+    content: {
+        lineHeight: 24,
+    },
+    footer: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        paddingHorizontal: 20,
+        paddingVertical: 15,
+        borderTopWidth: 1,
+        borderTopColor: '#e0e0e0',
+    },
+    navButton: {
+        padding: 10,
+    },
+    navButtonText: {
+        fontSize: 16,
+        color: '#007AFF',
+    },
+    pageNumber: {
+        fontSize: 14,
+        color: '#666',
+    },
+    controls: {
+        flexDirection: 'row',
+        justifyContent: 'center',
+        alignItems: 'center',
+        gap: 15,
+        paddingBottom: 20,
+    },
+    controlButton: {
+        fontSize: 20,
+        padding: 10,
+        color: '#007AFF',
+    },
+});
