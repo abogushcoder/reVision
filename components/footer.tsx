@@ -6,16 +6,15 @@ export type FooterProps = {
 }
 // Require images statically - React Native bundler needs this at build time
 const bgs = [
-  require("../assets/images/bg/bg1.png"),
-  require("../assets/images/bg/bg1.png"),
-  require("../assets/images/bg/bg1.png"),
-  require("../assets/images/bg/bg1.png"),
-  require("../assets/images/bg/bg1.png"),
-  require("../assets/images/bg/bg1.png"),
-  require("../assets/images/bg/bg1.png"),
-  require("../assets/images/bg/bg1.png"),
-  require("../assets/images/bg/bg1.png"),
-  require("../assets/images/bg/bg1.png"),
+  require("../assets/images/bg/cool_art_1.png"),
+  require("../assets/images/bg/cool_art_1.png"),
+  require("../assets/images/bg/cool_art_2.png"),
+  require("../assets/images/bg/cool_art_2.png"),
+  require("../assets/images/bg/cool_art_3.png"),
+  require("../assets/images/bg/cool_art_3.png"),
+  require("../assets/images/bg/cool_art_3.png"),
+  require("../assets/images/bg/cool_art_3.png"),
+  require("../assets/images/bg/cool_art_3.png"),
 ]
 
 /*const bgs = [
@@ -49,12 +48,12 @@ export default function Footer({
   const styles = StyleSheet.create({
     container: {
       height: "15%",
-      backgroundColor: '#9b9',
+      backgroundColor: 'transparent',
     },
     image: {
       height: "100%",
       width: "100%",
-      resizeMode: "contain"
+      resizeMode: "cover"
     }
   });
 

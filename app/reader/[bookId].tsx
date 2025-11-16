@@ -16,7 +16,9 @@ import { useFileSystem } from "@epubjs-react-native/expo-file-system";
 import { router, useLocalSearchParams } from "expo-router";
 import { useEffect, useState } from "react";
 import { Dimensions, StyleSheet, Text, View } from "react-native";
-const { width, height } = Dimensions.get("window");
+// const { width, height } = Dimensions.get("window");
+const width = "100%";
+const realHeight = "100%";
 
 export default function ReaderScreen() {
   const { bookId } = useLocalSearchParams<{ bookId: string }>();
@@ -39,7 +41,7 @@ export default function ReaderScreen() {
   const path = "../../epub_tools/alice_locations.json";
 
   useEffect(() => {
-    changeFontSize("30px");
+    changeFontSize("20px");
     
   }, [isReady])
 
@@ -85,10 +87,10 @@ export default function ReaderScreen() {
       const savedState = await getReadingState(bookId);
 
       if (savedState) {
-        console.log("Restoring reading position:", savedState.currentPage);
+        // console.log("Restoring reading position:", savedState.currentPage);
         setLocationIndex(savedState.currentPage.start.location);
-        console.log("going to position of currentCfi")
-        console.log(savedState.currentPage)
+        // console.log("going to position of currentCfi")
+        // console.log(savedState.currentPage)
         goToLocation(savedState.currentPage.start.cfi);
       } else {
         console.log("No saved position, starting from page 1");
@@ -103,11 +105,11 @@ export default function ReaderScreen() {
     if (!isReady) return;
 
     const savePosition = async () => {
-      console.log("saving reading position, currentcfi:")
-      console.log(currentCfi)
+      // console.log("saving reading position, currentcfi:")
+      // console.log(currentCfi)
       // weird edge cases on load
       if (locationIndex < 1) {
-        console.log("locatoin index not loaded yet, aborting save")
+        // console.log("locatoin index not loaded yet, aborting save")
         return
       }
       // TODO: MAke sure the thing saves properly
@@ -118,7 +120,7 @@ export default function ReaderScreen() {
         totalPages: totalLocations,
         lastRead: Date.now(),
       });
-      console.log("Saved reading position: page", locationIndex);
+      // console.log("Saved reading position: page", locationIndex);
     };
 
     savePosition();
@@ -146,7 +148,7 @@ export default function ReaderScreen() {
     if (currentLocation) {
       setCurrentCfi(currentLocation)
       if (locationIndex > 3 && currentLocation?.start?.location < 1) {
-        console.log("must be some weird shit")
+        // console.log("must be some weird stuff")
       } else {
         setLocationIndex(currentLocation.start.location)
       }
@@ -202,7 +204,7 @@ export default function ReaderScreen() {
           //src="https://github.com/ethanrackleff/gateHack/raw/refs/heads/main/epub_tools/Alice-In-Wonderland.epub"
           src="https://raw.githubusercontent.com/ethanrackleff/gateHack/main/epub_tools/alice-images-font.epub"
           width={width}
-          height={height}
+          height={realHeight}
           flow="paginated"
           fileSystem={useFileSystem} // ✅ pass the hook, don’t call it
           enableSwipe={false}
