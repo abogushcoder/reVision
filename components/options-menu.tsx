@@ -1,4 +1,5 @@
 import { Pressable, StyleSheet, Text, View } from "react-native"
+import Slider from '@react-native-community/slider';
 
 export type OptionsMenuProps = {
   goBack: any,
@@ -42,8 +43,34 @@ export default function OptionsMenu({
         <Text>{`Page ${currentPageNum} of ${totalPages}`}</Text>
       </View>
       <View style={styles.middleChunk}>
-        
+        <View>
+          <Slider
+            style={{ width: 300, height: 40 }}
+            minimumValue={1}
+            maximumValue={totalPages}
+            step={1}
+            value={currentPageNum}
+            onValueChange={setCurrentPageNum}
+            minimumTrackTintColor="#4a90e2"
+            maximumTrackTintColor="#ddd"
+            thumbTintColor="#4a90e2"
+          />
+        </View>
+        {/* <View> */}
+        {/*   <Slider */}
+        {/*     style={{ width: 300, height: 40 }} */}
+        {/*     minimumValue={Math.max(currentPageNum-3, 1)} */}
+        {/*     maximumValue={Math.min(currentPageNum+3, totalPages)} */}
+        {/*     step={1} */}
+        {/*     value={currentPageNum} */}
+        {/*     onValueChange={setCurrentPageNum} */}
+        {/*     minimumTrackTintColor="#4a90e2" */}
+        {/*     maximumTrackTintColor="#ddd" */}
+        {/*     thumbTintColor="#4a90e2" */}
+        {/*   /> */}
+        {/* </View> */}
       </View>
+
     </View>
   );
 
