@@ -1,4 +1,7 @@
 import { StyleSheet, Text, View } from "react-native"
+import AppText from "./app-text";
+// import { ReaderProvider } from "@epubjs-react-native/core";
+// import EpubReaderScreen from "./src/EpubReaderScreen";
 
 export type ReadingAreaProps = {
   pageText?: string;
@@ -16,7 +19,7 @@ export default function ReadingArea({
     container: {
       padding: 12,
       flex: 1,
-      backgroundColor: '#ddd',
+      backgroundColor: '#eee',
     },
     content: {
       textAlign: 'left',
@@ -29,10 +32,10 @@ export default function ReadingArea({
 
   return (
     <View style={styles.container}>
-      <Text style={styles.content}>
+      <AppText style={styles.content}>
         {pageText}
 
-      </Text>
+      </AppText>
 
     </View>
   );

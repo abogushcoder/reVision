@@ -28,9 +28,12 @@ export default function GenericPopup({
       alignItems: 'center'
     },
     menuContainer: {
-      borderRadius: 8,
+      borderWidth: 4,
+      borderStyle: "solid",
+      borderColor: "#222",
+      margin: 16,
       padding: 8,
-      backgroundColor: '#fcc',
+      backgroundColor: '#efefef',
         // shadow for iOS
       shadowColor: '#000',
       shadowOpacity: 0.15,

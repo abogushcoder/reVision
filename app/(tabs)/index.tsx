@@ -1,13 +1,24 @@
 import { getAllBooks } from '@/src/data/booksIndex';
 import { router } from 'expo-router';
 import { FlatList, Pressable, StyleSheet, Text, View } from 'react-native';
+import { useFonts } from 'expo-font';
+import AppText from '@/components/app-text';
 
 export default function HomeScreen() {
+
+  const [fontsLoaded] = useFonts({
+    'Jersey20-Regular': require('../../assets/fonts/Jersey20-Regular.ttf'),
+  })
+
+  if (!fontsLoaded) {
+    return null; // or a loading screen
+  }
+
   const books = getAllBooks();
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>My Library</Text>
+      <AppText style={styles.title}>My Library</AppText>
 
       <FlatList
         data={books}
@@ -17,11 +28,11 @@ export default function HomeScreen() {
             style={styles.bookCard}
             onPress={() => router.push(`/reader/${item.id}`)}
           >
-            <Text style={styles.bookTitle}>{item.title}</Text>
-            <Text style={styles.bookAuthor}>{item.author}</Text>
-            <Text style={styles.bookChapters}>
+            <AppText style={styles.bookTitle}>{item.title}</AppText>
+            <AppText style={styles.bookAuthor}>{item.author}</AppText>
+            <AppText style={styles.bookChapters}>
               {item.chapters.length} chapters
-            </Text>
+            </AppText>
           </Pressable>
         )}
       />
@@ -40,6 +51,7 @@ const styles = StyleSheet.create({
     fontSize: 32,
     fontWeight: 'bold',
     marginBottom: 20,
+    fontFamily: 'Jersey20-Regular'
   },
   bookCard: {
     backgroundColor: 'white',

@@ -3,6 +3,8 @@ import Footer from '@/components/footer';
 import GenericPopup from '@/components/generic-popup';
 import OptionsMenu from '@/components/options-menu';
 import ReadingArea from '@/components/reading-area';
+import SummaryLoading from '@/components/summary-loading';
+import Summary from '@/components/summary';
 import TopBar from '@/components/top-bar';
 import { getBookById } from '@/src/data/booksIndex';
 import {
@@ -28,10 +30,11 @@ import { Dimensions, Pressable, StyleSheet, Text, View } from 'react-native';
 
     const [bookLayout, setBookLayout] = useState<BookLayout | null>(null);
     const [currentPageNum, setCurrentPageNum] = useState(1);
-    const [fontSize, setFontSize] = useState(16);
+    const [fontSize, setFontSize] = useState(20);
     const [lineHeight] = useState(1.5);
     const [isLoading, setIsLoading] = useState(true);
     const [isMenuVisible, setIsMenuVisible] = useState(false);
+    const [isSummaryVisible, setIsSummaryVisible] = useState(true);
 
     const [currentSummary, setCurrentSummary] = useState<string>('');
     const [isLoadingSummary, setIsLoadingSummary] = useState(false);
@@ -79,6 +82,13 @@ import { Dimensions, Pressable, StyleSheet, Text, View } from 'react-native';
         return;
       }
 
+      // do not attempt to show summary if there is no reason to
+      if (currentPageNum < 4) {
+        setIsLoadingSummary(false);
+        setIsSummaryVisible(false);
+        return;
+      }
+
       // Calculate max summary length based on screen size
       const maxLength = calculateMaxSummaryLength(
         width - 40,  // screenWidth minus padding
@@ -108,6 +118,7 @@ import { Dimensions, Pressable, StyleSheet, Text, View } from 'react-native';
     };
 
     generateSummary();
+    // TODO: uncomment ts
   }, [bookLayout]); // Regenerate when page changes
 
  // Restore last reading position when book loads
@@ -191,6 +202,19 @@ import { Dimensions, Pressable, StyleSheet, Text, View } from 'react-native';
 
     return (
       <View style={styles.container}>
+
+        <GenericPopup
+          visible={isSummaryVisible}
+          onRequestClose={() => {setIsSummaryVisible(false)}}
+        >
+          {(currentSummary !== "") ? (
+            <Summary summary={currentSummary}/>
+          ) : (
+            <SummaryLoading />
+          )}
+          
+
+        </GenericPopup>
 
         <GenericPopup 
           visible={isMenuVisible} 

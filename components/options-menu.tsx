@@ -1,5 +1,7 @@
 import { Pressable, StyleSheet, Text, View } from "react-native"
 import Slider from '@react-native-community/slider';
+import AppText from "./app-text";
+import CustomSlider from "./custom-slider";
 
 export type OptionsMenuProps = {
   goBack: any,
@@ -17,21 +19,37 @@ export default function OptionsMenu({
 
   const styles = StyleSheet.create({
     container: {
-      backgroundColor: '#aaf',
+      justifyContent: "space-evenly"
     },
     topChunk: {
       flexDirection: "row",
       justifyContent: "space-between",
-      alignItems: "center"
+      alignItems: "center",
+      fontSize: 20,
+      paddingHorizontal: 12
     },
     backButton: {
-      width: 8,
-      height: 8,
-      backgroundColor: "#ff0"
+      width: 48,
+      height: 48,
+      justifyContent: "center",
+      alignItems: "center",
+    },
+    backButtonText: {
+      fontSize: 48,
     },
     middleChunk: {
-      height: 160,
-      width: 300
+      height: 120,
+      width: 300,
+      alignItems: "center",
+      justifyContent: "center"
+    },
+    pageNumberingText: {
+      fontSize: 24
+    },
+    sliderContainer: {
+      width: "100%",
+      justifyContent: "center",
+      alignItems: "center"
     }
   });
 
@@ -39,11 +57,12 @@ export default function OptionsMenu({
     <View style={styles.container}>
       <View style={styles.topChunk}>
         <Pressable style={styles.backButton} onPress={goBack}>
+          <AppText style={styles.backButtonText}>{'<-'}</AppText>
         </Pressable>
-        <Text>{`Page ${currentPageNum} of ${totalPages}`}</Text>
+        <AppText style={styles.pageNumberingText}>{`Page ${currentPageNum} of ${totalPages}`}</AppText>
       </View>
       <View style={styles.middleChunk}>
-        <View>
+        <View style={styles.sliderContainer}>
           <Slider
             style={{ width: 300, height: 40 }}
             minimumValue={1}
@@ -56,19 +75,6 @@ export default function OptionsMenu({
             thumbTintColor="#4a90e2"
           />
         </View>
-        {/* <View> */}
-        {/*   <Slider */}
-        {/*     style={{ width: 300, height: 40 }} */}
-        {/*     minimumValue={Math.max(currentPageNum-3, 1)} */}
-        {/*     maximumValue={Math.min(currentPageNum+3, totalPages)} */}
-        {/*     step={1} */}
-        {/*     value={currentPageNum} */}
-        {/*     onValueChange={setCurrentPageNum} */}
-        {/*     minimumTrackTintColor="#4a90e2" */}
-        {/*     maximumTrackTintColor="#ddd" */}
-        {/*     thumbTintColor="#4a90e2" */}
-        {/*   /> */}
-        {/* </View> */}
       </View>
 
     </View>

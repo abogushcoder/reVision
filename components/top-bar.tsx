@@ -1,4 +1,5 @@
 import { Text, StyleSheet, View } from "react-native"
+import AppText from "./app-text";
 
 export type TopBarProps = {
   pageNumber: number,
@@ -25,21 +26,22 @@ export default function TopBar({
       alignItems: "center",
     },
     barText: {
-      fontSize: 12,
+      fontSize: 14,
       color: "#444",
       paddingLeft: 6, 
     },
     bar: {
       flexGrow: 1,
       height: 12,
-      backgroundColor: '#e0e0e0',
-      borderRadius: 6,
+      backgroundColor: '#ddd',
+      borderWidth: 4,
+      borderStyle: "solid",
+      borderColor: "#222",
       overflow: 'hidden',   // ensures the fill stays inside the rounded bar
     },
     fill: {
       height: '100%',
-      backgroundColor: '#44ff44',
-      borderRadius: 6
+      backgroundColor: '#222',
     }
   });
 
@@ -51,7 +53,7 @@ export default function TopBar({
         <View style={[styles.fill, { width: `${clamped * 100}%` }]}>
         </View>
       </View>
-      <Text style={styles.barText}>{`${pageNumber}/${totalPages}`}</Text>
+      <AppText style={styles.barText}>{`${pageNumber}/${totalPages}`}</AppText>
     </View>
   );
 
