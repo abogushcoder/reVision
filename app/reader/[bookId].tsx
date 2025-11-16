@@ -49,7 +49,15 @@ import AppText from '@/components/app-text';
     const [isLoadingSummary, setIsLoadingSummary] = useState(false);
 
 
-    const { goPrevious, goNext, flow, currentLocation, goToLocation, totalLocations } = useReader();
+    const { goPrevious, goNext, changeFontFamily, currentLocation, goToLocation, totalLocations } = useReader();
+
+    const { injectJavascript } = useReader();
+
+    injectJavascript(`
+      const style = document.createElement('style');
+      style.innerHTML = "@font-face { font-family: 'Jersey20'; src: url('Jersey20-Regular.ttf'); } body, * { font-family: 'Jersey20' !important; }";
+      document.head.appendChild(style);
+    `);
 
     useEffect(() => {
       if (currentLocation) {
@@ -194,6 +202,13 @@ import AppText from '@/components/app-text';
       );
     }
 
+    useEffect(() => {
+      if (!isReady) return
+      changeFontFamily
+      
+
+    }, [isReady])
+
     const currentPage = getPageByNumber(bookLayout, currentPageNum);
     const pageText = getPageText(bookLayout, currentPageNum);
 
@@ -271,7 +286,7 @@ import AppText from '@/components/app-text';
 
         <Footer/>
 
-        <ControlOverlay activateMenu={() => setIsMenuVisible(true)} goPrevious={goPrevious} goNext={goNext} flow={flow}/>
+        <ControlOverlay activateMenu={() => setIsMenuVisible(true)} goPrevious={goPrevious} goNext={goNext}/>
       </View>
     );
   }

@@ -5,14 +5,12 @@ export type ControlOverlayProps = {
   activateMenu: any,
   goPrevious: any,
   goNext: any,
-  flow: any,
 }
 
 export default function ControlOverlay({
   activateMenu,
   goPrevious,
-  goNext,
-  flow
+  goNext
 }: ControlOverlayProps) {
 
   const styles = StyleSheet.create({
