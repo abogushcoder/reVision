@@ -1,16 +1,16 @@
 import { StyleSheet, Text, View, Pressable } from "react-native"
+import { useReader } from "@epubjs-react-native/core";
+
 
 export type ControlOverlayProps = {
-  goPrevPage: any,
-  goNextPage: any,
   activateMenu: any
 }
 
 export default function ControlOverlay({
-  goPrevPage,
-  goNextPage,
   activateMenu
 }: ControlOverlayProps) {
+
+  const { goPrevious, goNext } = useReader();
 
   const styles = StyleSheet.create({
     mainContainer: {
@@ -44,8 +44,11 @@ export default function ControlOverlay({
     <View style={styles.mainContainer} pointerEvents="box-none">
       <Pressable style={styles.topArea} onPress={activateMenu}></Pressable>
       <View style={styles.midArea}>
-        <Pressable style={styles.leftArea} onPress={goPrevPage}></Pressable>
-        <Pressable style={styles.rightArea} onPress={goNextPage}></Pressable>
+        <Pressable style={styles.leftArea} onPress={() => {
+          console.log("pressed")
+          goPrevious();
+        }}></Pressable>
+        <Pressable style={styles.rightArea} onPress={() => goNext}></Pressable>
       </View>
     </View>
   );

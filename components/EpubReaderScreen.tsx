@@ -13,6 +13,7 @@ export default function EpubReader() {
         width={width}
         height={height}
         fileSystem={useFileSystem}      // ✅ pass the hook, don’t call it
+        enableSwipe={false}
         waitForLocationsReady
         onReady={() => {
           console.log("Book loaded");

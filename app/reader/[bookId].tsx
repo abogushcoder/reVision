@@ -118,7 +118,7 @@ import { Dimensions, Pressable, StyleSheet, Text, View } from 'react-native';
       setIsLoadingSummary(false);
     };
 
-    generateSummary();
+    // generateSummary();
     // TODO: uncomment ts
   }, [bookLayout]); // Regenerate when page changes
 
@@ -232,7 +232,7 @@ import { Dimensions, Pressable, StyleSheet, Text, View } from 'react-native';
 
         <Footer/>
 
-        <ControlOverlay goPrevPage={goPrevPage} goNextPage={goNextPage} activateMenu={() => setIsMenuVisible(true)}/>
+        <ControlOverlay activateMenu={() => setIsMenuVisible(true)}/>
 
       </View>
     );
