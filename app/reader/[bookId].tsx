@@ -1,17 +1,14 @@
 import ControlOverlay from '@/components/control-overlay';
-import { Reader } from "@epubjs-react-native/core";
-import { useFileSystem } from "@epubjs-react-native/expo-file-system";
-import { useReader } from "@epubjs-react-native/core";
 import Footer from '@/components/footer';
 import GenericPopup from '@/components/generic-popup';
 import OptionsMenu from '@/components/options-menu';
-import SummaryLoading from '@/components/summary-loading';
 import Summary from '@/components/summary';
+import SummaryLoading from '@/components/summary-loading';
 import TopBar from '@/components/top-bar';
 import { getBookById } from '@/src/data/booksIndex';
 import {
   calculateMaxSummaryLength,
-  generateSummaryForCurrentPosition
+  getSummary
 } from '@/src/services/aiSummaries';
 import {
   generateBookLayout,
@@ -21,6 +18,8 @@ import {
   type LayoutConfig
 } from '@/src/services/pagination';
 import { getReadingState, saveReadingState } from '@/src/services/storage';
+import { Reader, useReader } from "@epubjs-react-native/core";
+import { useFileSystem } from "@epubjs-react-native/expo-file-system";
 import { router, useLocalSearchParams } from 'expo-router';
 import { useEffect, useState } from 'react';
 import { ReaderProvider } from "@epubjs-react-native/core";
@@ -52,6 +51,8 @@ import AppText from '@/components/app-text';
     const { goPrevious, goNext, currentLocation, goToLocation, totalLocations } = useReader();
 
     const { injectJavascript } = useReader();
+
+    const path = "../../epub_tools/alice_locations.json";
 
     useEffect(() => {
       if (currentLocation) {
@@ -90,26 +91,15 @@ import AppText from '@/components/app-text';
 
     // Generate summary when book layout is ready
   useEffect(() => {
-    if (!bookLayout || !book || isLoading)  {
-      console.log('Returning early');
-      return;
+    if (!currentLocation) {
+      console.log("no location yet")
+      return
     }
 
     const generateSummary = async () => {
       setIsLoadingSummary(true);
 
-      const currentPage = getPageByNumber(bookLayout, currentPageNum);
-      if (!currentPage) {
-        setIsLoadingSummary(false);
-        return;
-      }
-
       // do not attempt to show summary if there is no reason to
-      if (currentPageNum < 4) {
-        setIsLoadingSummary(false);
-        setIsSummaryVisible(false);
-        return;
-      }
 
       // Calculate max summary length based on screen size
       const maxLength = calculateMaxSummaryLength(
@@ -119,29 +109,24 @@ import AppText from '@/components/app-text';
         lineHeight
       );
 
-      const summary = await generateSummaryForCurrentPosition(
-        book,
-        bookLayout,
-        currentPage,
-        maxLength
-      );
+      const summary = await getSummary(path, currentLocation.start.index); 
 
       console.log('=== SUMMARY GENERATED ===');
       console.log('Current Page:', currentPageNum);
       console.log('Summary:', summary);
-      console.log('Summary Length:', summary.length);
+      console.log('Summary Length:', summary ? summary.length : -1);
       console.log('========================');
 
-      setCurrentSummary(summary);
+      setCurrentSummary(summary ? summary : "no summary");
       setIsLoadingSummary(false);
 
-      setCurrentSummary(summary);
+      setCurrentSummary(summary ? summary : "no summary");
       setIsLoadingSummary(false);
     };
 
-    // generateSummary();
+     generateSummary();
     // TODO: uncomment ts
-  }, [bookLayout]); // Regenerate when page changes
+  }, []); // Regenerate when page changes
 
  // Restore last reading position when book loads
   useEffect(() => {
