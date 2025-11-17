@@ -1,4 +1,4 @@
-# gateHack - AI-Enhanced EPUB Reader
+# reVision - AI-Enhanced EPUB Reader
 
 > Revolutionizing the reading experience by transforming books into interactive, AI-enhanced picture books with intelligent summaries and a retro-gaming aesthetic.
 
@@ -11,7 +11,7 @@
 
 ## Overview
 
-**gateHack** is a Kindle-like EPUB reader built with React Native and Expo that enhances the reading experience through AI-powered features. Originally designed for sci-fi and fantasy novels, it transforms traditional text-based reading into an immersive visual experience with AI-generated summaries and retro 16-bit pixel art aesthetics.
+**reVision** is a Kindle-like EPUB reader built with React Native and Expo that enhances the reading experience through AI-powered features. Originally designed for sci-fi and fantasy novels, it transforms traditional text-based reading into an immersive visual experience with AI-generated summaries and retro 16-bit pixel art aesthetics.
 
 ### Key Features
 
@@ -57,7 +57,7 @@ This repository contains a **functional prototype** built during a hackathon. Th
 ### Project Structure
 
 ```
-gateHack/
+reVision/
 ├── app/                          # Expo Router screens
 │   ├── _layout.tsx              # Root layout with ReaderProvider
 │   ├── (tabs)/
@@ -102,7 +102,7 @@ gateHack/
 
 ### 1. Location-Based Reading System
 
-Instead of traditional page numbers, gateHack uses a **location system** similar to Kindle:
+Instead of traditional page numbers, reVision uses a **location system** similar to Kindle:
 
 - Each location represents ~1,600 characters of text
 - Provides consistent navigation across different screen sizes
@@ -123,7 +123,7 @@ epub_to_locations.py → alice_locations.json (90 locations)
 
 ### 2. AI-Powered Summaries
 
-When you reopen a book, gateHack automatically generates a summary of what you last read:
+When you reopen a book, reVision automatically generates a summary of what you last read:
 
 **Features:**
 - Summarizes the last 5 locations (~8,000 characters)
@@ -205,8 +205,8 @@ Your reading position is automatically saved using AsyncStorage:
 
 1. **Clone the repository**
    ```bash
-   git clone https://github.com/yourusername/gateHack.git
-   cd gateHack
+   git clone https://github.com/yourusername/reVision.git
+   cd reVision
    ```
 
 2. **Install dependencies**
@@ -469,7 +469,9 @@ This project is currently in prototype status and is being rewritten in Flutter.
 
 ### Team
 
-- **Alex Bogush** - Creator and Lead Developer
+- **Alex Bogush**
+- **Ethan Rackleff**
+- **William White**
 
 ### Special Thanks
 
@@ -534,7 +536,7 @@ A: The Flutter repository will be made public once the initial implementation is
 
 ## Contact & Support
 
-- **GitHub Issues**: [Report bugs or request features](https://github.com/yourusername/gateHack/issues)
+- **GitHub Issues**: [Report bugs or request features](https://github.com/yourusername/reVision/issues)
 - **Email**: your.email@example.com
 - **Twitter/X**: @yourusername
 
