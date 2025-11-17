@@ -473,12 +473,6 @@ This project is currently in prototype status and is being rewritten in Flutter.
 - **Ethan Rackleff**
 - **William White**
 
-### Special Thanks
-
-- Anthropic Claude for development assistance
-- OpenAI for GPT-4 API access
-- The Expo and React Native communities
-
 ---
 
 ## License
@@ -526,21 +520,8 @@ A: The current version serves as a proof-of-concept. Future development will foc
 **Q: Can I use my own OpenAI API key?**
 A: Yes! Just add your key to the `.env` file as `EXPO_PUBLIC_OPENAI_API_KEY`.
 
-**Q: Does this work with DRM-protected books?**
-A: No, currently only DRM-free EPUB files are supported.
-
-**Q: Can I contribute to the Flutter rewrite?**
-A: The Flutter repository will be made public once the initial implementation is complete. Stay tuned!
-
 ---
 
-## Contact & Support
-
-- **GitHub Issues**: [Report bugs or request features](https://github.com/yourusername/reVision/issues)
-- **Email**: your.email@example.com
-- **Twitter/X**: @yourusername
-
----
 
 **Made with love for readers who want more from their books**
 
